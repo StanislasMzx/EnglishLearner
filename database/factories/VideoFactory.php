@@ -20,8 +20,6 @@ class VideoFactory extends Factory
             'title' => $this->faker->word,
             'name' => $this->faker->word,
             'path' => 'videos/',
-            'user_id' => User::factory()->create()->id,
-            'quizz_id' => Quizz::factory()->create()->id,
         ];
     }
 }

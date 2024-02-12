@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\QuizzController;
 use App\Http\Controllers\VideoController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -26,17 +27,28 @@ Route::get('/', function () {
     ]);
 });
 
+
+Route::get('/dashboard', function () {
+    return Inertia::render('Dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    })->name('upload.index');
-    Route::prefix('dashboard')->group(function () {
-        Route::get('/videos', [VideoController::class, 'index'])->name('videos.index');
-        Route::post('/videos', [VideoController::class, 'store'])->name('videos.store');
-        Route::get('/builder', function () {
-            return Inertia::render('Builder');
-    })->name('builder.index');
+})->name('upload.index');
+
+Route::prefix('dashboard')->group(function () {
+    Route::prefix('quizz')->group(function () {
+        Route::get('/', [QuizzController::class, 'index'])->name('quizz.index');
+        Route::get('/{quizz_id}', [QuizzController::class, 'show'])->name('quizz.show');
+        Route::prefix('builder')->group(function () {
+            Route::get('/', static function () {
+                return Inertia::render('Builder');
+            })->name('builder.index');
+            Route::post('/{quizz_id}/video', [VideoController::class, 'store'])->name('video.store');
+        });
+    });
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

@@ -15,20 +15,8 @@ class Video extends Model
         'title',
         'name',
         'path',
-        'user_id',
     ];
 
-    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
-
-    public function quizz(): \Illuminate\Database\Eloquent\Relations\BelongsTo
-    {
-        return $this->belongsTo(Quizz::class);
-    }
-
-    // Attribute make for complete path
     public function completePath(): Attribute
     {
         return Attribute::make(

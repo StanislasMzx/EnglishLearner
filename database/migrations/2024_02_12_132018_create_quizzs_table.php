@@ -15,6 +15,9 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
 
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('video_id')->nullable()->constrained('videos')->cascadeOnDelete();
+
             $table->string('title');
             $table->string('description');
         });

@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Quizz;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
 
@@ -17,6 +18,7 @@ class QuizzFactory extends Factory
             'updated_at' => Carbon::now(),
             'title' => $this->faker->word(),
             'description' => $this->faker->text(),
+            'user_id' => User::factory()->create()->id,
         ];
     }
 }

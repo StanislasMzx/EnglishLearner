@@ -12,5 +12,18 @@ class Quizz extends Model
     protected $fillable = [
         'title',
         'description',
+        'user_id',
+        'video_id'
     ];
+
+    public function video(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Video::class);
+    }
+
+    public function user(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
 }
