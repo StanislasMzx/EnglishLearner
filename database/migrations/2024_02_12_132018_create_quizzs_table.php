@@ -11,15 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('videos', static function (Blueprint $table) {
+        Schema::create('quizzs', static function (Blueprint $table) {
             $table->id();
             $table->timestamps();
 
-            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            $table->foreignId('quizz_id')->constrained('quizzs')->cascadeOnDelete();
-
             $table->string('title');
-            $table->string('storage_name');
+            $table->string('description');
         });
     }
 
@@ -28,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('videos');
+        Schema::dropIfExists('quizzs');
     }
 };
