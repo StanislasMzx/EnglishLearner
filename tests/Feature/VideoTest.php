@@ -16,10 +16,10 @@ test('GET : All videos', function () {
 
     Video::factory()->count(3)->create();
 
-    $response = $this->get('/videos');
+    $response = $this->get('/dashboard/videos');
 
     $response->assertOk()->assertInertia(fn(AssertableInertia $page) => $page
-        ->component('Welcome')
+        ->component('Dashboard')
         ->has('videos')
         ->where('videos', Video::all()->toArray())
     );
@@ -27,7 +27,7 @@ test('GET : All videos', function () {
 
 test('POST : New Video', function () {
 
-    $response = $this->post('/videos', [
+    $response = $this->post('/dashboard/videos', [
         'title' => 'Wtf',
         'video' => UploadedFile::fake()->create('video.mp4', 1024),
     ]);
