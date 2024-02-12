@@ -27,7 +27,6 @@ Route::get('/', function () {
 });
 
 Route::get('/videos', [VideoController::class, 'index'])->name('videos.index');
-Route::post('/videos', [VideoController::class, 'store'])->name('videos.store');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
@@ -37,6 +36,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    })->name('upload.index');
+    Route::prefix('dashboard')->group(function () {
+        Route::get('/videos', [VideoController::class, 'index'])->name('videos.index');
+        Route::post('/videos', [VideoController::class, 'store'])->name('videos.store');
+        Route::get('/builder', function () {
+            return Inertia::render('Builder');
+    })->name('builder.index');
 });
 
 require __DIR__.'/auth.php';

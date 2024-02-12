@@ -13,7 +13,7 @@ class VideoController extends Controller
     public function index(Request $request): \Inertia\Response
     {
         $videos = Video::all();
-        return Inertia::render('Welcome', [
+        return Inertia::render('Dashboard', [
             'videos' => $videos
         ]);
     }
