@@ -27,11 +27,6 @@ Route::get('/', function () {
     ]);
 });
 
-
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -40,14 +35,14 @@ Route::middleware('auth')->group(function () {
 
 Route::prefix('dashboard')->group(function () {
     Route::prefix('quizz')->group(function () {
-        Route::get('/', [QuizzController::class, 'index'])->name('quizz.index');
-        Route::get('/{quizz_id}', [QuizzController::class, 'show'])->name('quizz.show');
         Route::prefix('builder')->group(function () {
             Route::get('/', static function () {
                 return Inertia::render('Builder');
             })->name('builder.index');
             Route::post('/{quizz_id}/video', [VideoController::class, 'store'])->name('video.store');
         });
+        Route::get('/', [QuizzController::class, 'index'])->name('quizz.index');
+        Route::get('/{quizz_id}', [QuizzController::class, 'show'])->name('quizz.show');
     });
 });
 

@@ -24,7 +24,7 @@ test('GET - quizz.show - classic', function () {
     $quizz = Quizz::factory()->create();
     $response = $this->getJson(route('quizz.show', ['quizz_id' => $quizz->id]));
     $response->assertOk()->assertInertia(function (AssertableInertia $page) use ($quizz) {
-        $page->component('Dashboard')
+        $page->component('Quizz')
             ->has('quizz')
             ->where('quizz', Quizz::with('video')->findOrFail($quizz->id)->toArray());
     });

@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Quizz;
 use App\Models\User;
 use App\Models\Video;
 use Illuminate\Database\Seeder;
@@ -28,6 +29,6 @@ class DatabaseSeeder extends Seeder
                 'password' => Hash::make('password'),
                 'name' => 'Admin',
             ]);
-        Video::factory()->count(20)->create();
+        Quizz::factory()->count(20)->create();
     }
 }

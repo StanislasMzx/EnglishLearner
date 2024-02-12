@@ -19,7 +19,7 @@ class QuizzController extends Controller
     public function show(Request $request, int $quizz_id): \Inertia\Response
     {
         $quizz = Quizz::with('video')->findOrFail($quizz_id);
-        return Inertia::render('Dashboard', [
+        return Inertia::render('Quizz', [
             'quizz' => $quizz
         ]);
     }
