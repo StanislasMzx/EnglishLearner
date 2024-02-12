@@ -19,8 +19,8 @@ class VideoFactory extends Factory
             'updated_at' => Carbon::now(),
             'title' => $this->faker->sentence,
             'storage_name' => $this->faker->word,
-            'user' => User::factory()->create(),
-            'quizz' => Quizz::factory()->create(),
+            'user_id' => User::factory()->create()->id,
+            'quizz_id' => Quizz::factory()->create()->id,
         ];
     }
 }
