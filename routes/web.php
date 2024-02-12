@@ -27,6 +27,7 @@ Route::get('/', function () {
 });
 
 Route::get('/videos', [VideoController::class, 'index'])->name('videos.index');
+Route::post('/videos', [VideoController::class, 'store'])->name('videos.store');
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

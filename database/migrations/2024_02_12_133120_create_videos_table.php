@@ -16,10 +16,11 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            $table->foreignId('quizz_id')->constrained('quizzs')->cascadeOnDelete();
+            $table->foreignId('quizz_id')->nullable()->constrained('quizzs')->cascadeOnDelete();
 
             $table->string('title');
-            $table->string('storage_name');
+            $table->string('name');
+            $table->string('path');
         });
     }
 

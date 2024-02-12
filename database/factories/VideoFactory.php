@@ -18,7 +18,8 @@ class VideoFactory extends Factory
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
             'title' => $this->faker->sentence,
-            'storage_name' => $this->faker->word,
+            'name' => $this->faker->word,
+            'path' => 'videos/',
             'user_id' => User::factory()->create()->id,
             'quizz_id' => Quizz::factory()->create()->id,
         ];
