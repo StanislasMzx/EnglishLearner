@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Quizz;
+use App\Models\TextField;
 use App\Models\User;
 use Inertia\Testing\AssertableInertia;
 
@@ -28,4 +29,16 @@ test('GET - quizz.show - classic', function () {
             ->has('quizz')
             ->where('quizz', Quizz::with('video')->findOrFail($quizz->id)->toArray());
     });
+});
+
+test('POST : quizz.store - classic', function () {
+    $quizz = Quizz::factory()->make();
+    $textFields = TextField::factory()->count(3)->make();
+    $response = $this->post(route('quizz.store'), [
+        'title' => $quizz->title,
+        'video_id' => $quizz->video_id,
+        'description' => $quizz->description,
+        'textFields' => $textFields->toArray()
+    ]);
+    $this->assertDatabaseHas('quizzs', ['title' => $quizz->title]);
 });

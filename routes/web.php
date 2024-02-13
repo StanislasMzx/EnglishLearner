@@ -43,6 +43,7 @@ Route::prefix('dashboard')->group(function () {
         });
         Route::get('/', [QuizzController::class, 'index'])->name('quizz.index');
         Route::get('/{quizz_id}', [QuizzController::class, 'show'])->name('quizz.show');
+        Route::post('/', [QuizzController::class, 'store'])->name('quizz.store');
     });
 });
 
