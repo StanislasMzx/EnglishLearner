@@ -24,7 +24,7 @@ export default function Dashboard({ auth, quizzes }) {
                                     </Link>
                                 </div>
                                 <p className="mt-2 block text-sm font-medium text-gray-900 truncate pointer-events-none">{quizz.title}</p>
-                                <p className="block text-sm font-medium text-gray-500 pointer-events-none">{quizz.created_at}</p>
+                                <p className="block text-sm font-medium text-gray-500 pointer-events-none">{quizz.description}</p>
                             </li>
                         ))}
                     </ul>

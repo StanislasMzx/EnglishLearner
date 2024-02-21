@@ -21,6 +21,9 @@
     },
     "dependencies": {
         "@heroicons/react": "^2.1.1",
-        "@tailwindcss/aspect-ratio": "^0.4.2"
+        "@tailwindcss/aspect-ratio": "^0.4.2",
+        "@tailwindcss/typography": "^0.5.10",
+        "dateformat": "^5.0.3",
+        "react-player": "^2.14.1"
     }
 }
