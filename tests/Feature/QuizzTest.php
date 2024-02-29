@@ -40,5 +40,6 @@ test('POST : quizz.store - classic', function () {
         'description' => $quizz->description,
         'textFields' => $textFields->toArray()
     ]);
+    $response->assertCreated();
     $this->assertDatabaseHas('quizzs', ['title' => $quizz->title]);
 });
