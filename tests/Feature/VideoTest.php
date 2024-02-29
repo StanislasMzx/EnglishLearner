@@ -9,7 +9,6 @@ use Illuminate\Http\UploadedFile;
 beforeEach(function () {
     $this->user = User::factory()->create();
     $this->actingAs($this->user);
-    Storage::fake('public');
 });
 
 test('POST : video.post - classic', function () {
@@ -19,7 +18,7 @@ test('POST : video.post - classic', function () {
         'title' => 'Wtf',
         'video' => UploadedFile::fake()->create('video.mp4', 1024),
     ]);
-    $video = Video::first();
+    $video = Video::where('title', 'Wtf')->first();
     $response->assertCreated();
     \Illuminate\Support\Facades\Storage::disk('public')->assertExists($video->completePath);
 
