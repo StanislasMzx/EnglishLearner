@@ -9,6 +9,7 @@ use Illuminate\Http\UploadedFile;
 beforeEach(function () {
     $this->user = User::factory()->create();
     $this->actingAs($this->user);
+    Storage::fake('public');
 });
 
 test('POST : video.post - classic', function () {

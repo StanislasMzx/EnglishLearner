@@ -11,14 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('choices', function (Blueprint $table) {
+        Schema::create('radio_buttons_fields', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-
-            $table->morphs('choosable');
-
-            $table->boolean('is_correct')->default(false);
-            $table->string('title');
+            $table->foreignId('quizz_id')->constrained();
             $table->integer('index');
         });
     }
@@ -28,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('choices');
+        Schema::dropIfExists('radio_buttons_fields');
     }
 };

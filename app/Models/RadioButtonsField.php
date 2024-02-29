@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TextField extends Model
+class RadioButtonsField extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'quizz_id', 'title', 'placeholder', 'answer', 'index'
+        'quizz_id', 'title', 'index'
     ];
 
     public function quizz()
@@ -18,5 +18,8 @@ class TextField extends Model
         return $this->belongsTo(Quizz::class);
     }
 
-
+    public function choices()
+    {
+        return $this->morphMany(Choice::class, 'choosable');
+    }
 }
