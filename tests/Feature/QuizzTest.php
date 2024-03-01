@@ -33,13 +33,27 @@ test('GET - quizz.show - classic', function () {
 
 test('POST : quizz.store - classic', function () {
     $quizz = Quizz::factory()->make();
+    $response = $this->post(route('quizz.store'), [
+        'title' => $quizz->title,
+        'video_id' => $quizz->video_id,
+        'description' => $quizz->description,
+    ]);
+    $response->assertCreated();
+    $this->assertDatabaseHas('quizzs', ['title' => $quizz->title]);
+});
+
+test('POST - quizz.store - store elements', function () {
+    $quizz = Quizz::factory()->make();
     $textFields = TextField::factory()->count(3)->make();
     $response = $this->post(route('quizz.store'), [
         'title' => $quizz->title,
         'video_id' => $quizz->video_id,
         'description' => $quizz->description,
-        'textFields' => $textFields->toArray()
+        'textFields' => $textFields->toArray(),
     ]);
     $response->assertCreated();
     $this->assertDatabaseHas('quizzs', ['title' => $quizz->title]);
+    foreach ($textFields as $textField) {
+        $this->assertDatabaseHas('text_fields', ['title' => $textField->title]);
+    }
 });
