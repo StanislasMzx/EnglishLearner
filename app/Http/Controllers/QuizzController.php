@@ -6,9 +6,11 @@ use App\Models\Choice;
 use App\Models\Quizz;
 use App\Models\RadioButtonsField;
 use App\Models\TextField;
+use App\Models\Video;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -38,18 +40,28 @@ class QuizzController extends Controller
 
             $validated = $request->validate([
                 'title' => 'required|string|max:255',
-                'video_id' => 'required|integer|exists:videos,id',
                 'description' => 'required|string',
                 'textFields' => 'array|nullable',
                 'RadioButtonsFields' => 'array|nullable',
                 'RadioButtonsFields.*.choices' => 'array|nullable',
+                'video' => 'required|mimes:mp4',
             ]);
+
+
+            $uploadedFile = $request->file('video');
+            $video = Video::create([
+                'title' => $request->title,
+                'name' => $uploadedFile->hashName(),
+                'path' => 'videos/',
+            ]);
+
+            Storage::disk('public')->put($video->completePath, $uploadedFile->get());
 
             $quizz = Quizz::create([
                 'title' => $validated['title'],
                 'description' => $validated['description'],
                 'user_id' => $request->user()->id,
-                'video_id' => $validated['video_id']
+                'video_id' => $video->id
             ]);
 
             if (isset($validated['textFields'])) {
