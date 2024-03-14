@@ -30,13 +30,13 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-export default function Quizz({ auth, quizz }) {
+export default function Quizz({ auth, quizz, video_src }) {
     const [playing, setPlaying] = useState(false);
     const [played, setPlayed] = useState(0);
     const [playedSeconds, setPlayedSeconds] = useState(0);
     const [duration, setDuration] = useState(0);
     const ref = createRef();
-
+    
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -88,7 +88,7 @@ export default function Quizz({ auth, quizz }) {
                                 </div>
 
                                 <div className="mt-10">
-                                    <ReactPlayer url='https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+                                    <ReactPlayer url={video_src}
                                                  ref={ref}
                                                  playing={playing}
                                                  width='100%'
@@ -103,7 +103,7 @@ export default function Quizz({ auth, quizz }) {
 
                                 <div className="mt-10 sm:flex-col1">
                                     <div className="flex justify-center items-center">
-                                        <text className="font-medium">{new Date(playedSeconds * 1000).toISOString().substring(14, 19)}</text>
+                                        <span className="font-medium">{new Date(playedSeconds * 1000).toISOString().substring(14, 19)}</span>
                                         <input
                                             type="range"
                                             min={0}
@@ -117,7 +117,7 @@ export default function Quizz({ auth, quizz }) {
                                                 setPlayed(ref.current?.getCurrentTime() / ref.current?.getDuration())
                                             }}
                                         />
-                                        <text className="font-medium">{new Date(duration * 1000).toISOString().substring(14, 19)}</text>
+                                        <span className="font-medium">{new Date(duration * 1000).toISOString().substring(14, 19)}</span>
                                     </div>
                                     <PlayPauseIcon
                                         className="block h-12 w-12 flex-1 bg-indigo-600 border border-transparent rounded-md py-3 px-8 font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-50 focus:ring-indigo-500 sm:w-full"

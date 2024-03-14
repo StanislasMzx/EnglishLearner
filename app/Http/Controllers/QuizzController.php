@@ -20,7 +20,7 @@ class QuizzController extends Controller
     {
         $quizzes = Quizz::with('video')->get();
         return Inertia::render('Dashboard', [
-            'quizzes' => $quizzes
+            'quizzes' => $quizzes,
         ]);
     }
 
@@ -28,7 +28,8 @@ class QuizzController extends Controller
     {
         $quizz = Quizz::with('video')->findOrFail($quizz_id);
         return Inertia::render('Quizz', [
-            'quizz' => $quizz
+            'quizz' => $quizz,
+            'video_src' => Storage::disk('public')->url($quizz->video->path . $quizz->video->name),
         ]);
     }
 

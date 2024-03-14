@@ -39,7 +39,6 @@ Route::prefix('dashboard')->group(function () {
             Route::get('/', static function () {
                 return Inertia::render('Builder');
             })->name('builder.index');
-            Route::post('/{quizz_id}/video', [VideoController::class, 'store'])->name('video.store');
         });
         Route::get('/', [QuizzController::class, 'index'])->name('quizz.index');
         Route::get('/{quizz_id}', [QuizzController::class, 'show'])->name('quizz.show');
