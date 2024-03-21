@@ -78,22 +78,14 @@ class QuizzController extends Controller
 
                 if (isset($validated['radioButtonsFields'])) {
 
-                    $radioButtonsFields = [];
                     foreach ($validated['radioButtonsFields'] as $radioButtonsField) {
-
-                        $radioButtonsFields[] = array_merge($radioButtonsField, ['quizz_id' => $quizz->id]);
-
-                        // TODO see why title disappear
-                        //dd($validated['radioButtonsFields']);
                         $group = RadioButtonsField::create([
                             'title' => $radioButtonsField['title'],
                             'quizz_id' => $quizz->id
                         ]);
-                        //dd($group->toArray());
                         $choices = [];
                         foreach ($radioButtonsField['choices'] as $choice) {
                             $choices[] = array_merge($choice, ['choosable_id' => $group->id, 'choosable_type' => RadioButtonsField::class]);
-                            //dd($choices);
                         }
                         Choice::insert($choices);
                     }
