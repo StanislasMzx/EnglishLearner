@@ -46,6 +46,7 @@ class QuizzController extends Controller
                     'textFields' => 'array|nullable',
                     'radioButtonsFields' => 'array|nullable',
                     'radioButtonsFields.*.choices' => 'array|nullable',
+                    'radioButtonsFields.*.title' => 'required|string',
                     'video' => 'required|mimes:mp4',
                 ]);
 
@@ -85,7 +86,7 @@ class QuizzController extends Controller
                         // TODO see why title disappear
                         //dd($validated['radioButtonsFields']);
                         $group = RadioButtonsField::create([
-                            //'title' => $radioButtonsField['title'],
+                            'title' => $radioButtonsField['title'],
                             'quizz_id' => $quizz->id
                         ]);
                         //dd($group->toArray());

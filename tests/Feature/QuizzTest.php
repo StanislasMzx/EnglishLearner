@@ -69,5 +69,6 @@ test('POST - quizz.store - store elements', function () {
         $this->assertDatabaseHas('text_fields', ['title' => $textField->title]);
     }
 
+    $this->assertDatabaseHas('radio_buttons_fields', ['title' => "oklm"]);
     $this->assertDatabaseHas('choices', ['title' => "test"]);
 })->only();
