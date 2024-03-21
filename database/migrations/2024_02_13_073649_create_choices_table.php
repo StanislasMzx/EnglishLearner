@@ -19,7 +19,7 @@ return new class extends Migration
 
             $table->boolean('is_correct')->default(false);
             $table->string('title');
-            $table->integer('index');
+            $table->integer('index')->default(0);
         });
     }
 

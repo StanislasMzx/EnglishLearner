@@ -3,6 +3,7 @@
 use App\Models\Quizz;
 use App\Models\TextField;
 use App\Models\User;
+use Illuminate\Http\UploadedFile;
 use Inertia\Testing\AssertableInertia;
 
 beforeEach(function () {
@@ -37,6 +38,7 @@ test('POST : quizz.store - classic', function () {
         'title' => $quizz->title,
         'video_id' => $quizz->video_id,
         'description' => $quizz->description,
+        'video' => UploadedFile::fake()->create('video.mp4', 1024),
     ]);
     $response->assertCreated();
     $this->assertDatabaseHas('quizzs', ['title' => $quizz->title]);
@@ -50,10 +52,22 @@ test('POST - quizz.store - store elements', function () {
         'video_id' => $quizz->video_id,
         'description' => $quizz->description,
         'textFields' => $textFields->toArray(),
+        'video' => UploadedFile::fake()->create('video.mp4', 1024),
+        'radioButtonsFields' => [
+            [
+                'choices' => [['title' => "test", "is_correct" => true]],
+                'title' => "oklm"
+            ]
+        ]
+
     ]);
-    $response->assertCreated();
+    $response->assertRedirect();
     $this->assertDatabaseHas('quizzs', ['title' => $quizz->title]);
+    $this->assertDatabaseHas('videos', ['title' => $quizz->title]);
+    // test if ra
     foreach ($textFields as $textField) {
         $this->assertDatabaseHas('text_fields', ['title' => $textField->title]);
     }
-});
+
+    $this->assertDatabaseHas('choices', ['title' => "test"]);
+})->only();

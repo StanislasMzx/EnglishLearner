@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->foreignId('quizz_id')->constrained();
-            $table->integer('index');
+            $table->string('title')->nullable();
+            $table->integer('index')->default(0);
         });
     }
 
