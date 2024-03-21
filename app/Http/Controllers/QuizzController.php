@@ -33,63 +33,69 @@ class QuizzController extends Controller
         ]);
     }
 
-    public function store(Request $request): JsonResponse
+    public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
 
+        try {
 
-        DB::transaction(static function () use ($request) {
+            DB::transaction(static function () use ($request) {
 
-            $validated = $request->validate([
-                'title' => 'required|string|max:255',
-                'description' => 'required|string',
-                'textFields' => 'array|nullable',
-                'RadioButtonsFields' => 'array|nullable',
-                'RadioButtonsFields.*.choices' => 'array|nullable',
-                'video' => 'required|mimes:mp4',
-            ]);
-
-
-            $uploadedFile = $request->file('video');
-            $video = Video::create([
-                'title' => $request->title,
-                'name' => $uploadedFile->hashName(),
-                'path' => 'videos/',
-            ]);
-
-            Storage::disk('public')->put($video->completePath, $uploadedFile->get());
-
-            $quizz = Quizz::create([
-                'title' => $validated['title'],
-                'description' => $validated['description'],
-                'user_id' => $request->user()->id,
-                'video_id' => $video->id
-            ]);
-
-            if (isset($validated['textFields'])) {
-                $textFields = [];
-                foreach ($validated['textFields'] as $textField) {
-                    $textFields[] = array_merge($textField, ['quizz_id' => $quizz->id]);
-                }
-                TextField::insert($textFields);
-            }
+                $validated = $request->validate([
+                    'title' => 'required|string|max:255',
+                    'description' => 'required|string',
+                    'textFields' => 'array|nullable',
+                    'radioButtonsFields' => 'array|nullable',
+                    'radioButtonsFields.*.choices' => 'array|nullable',
+                    'radioButtonsFields.*.title' => 'required|string',
+                    'video' => 'required|mimes:mp4',
+                ]);
 
 
-            if (isset($validated['radioButtonsFields'])) {
-                $radioButtonsFields = [];
-                foreach ($validated['radioButtonsFields'] as $radioButtonsField) {
-                    $radioButtonsFields[] = array_merge($radioButtonsField, ['quizz_id' => $quizz->id]);
-                    $group = RadioButtonsField::create($radioButtonsFields);
-                    $choices = [];
-                    foreach ($radioButtonsField['choices'] as $choice) {
-                        $choices[] = array_merge($choice, ['choosable_id' => $group->id, 'choosable_type' => RadioButtonsField::class]);
+                $uploadedFile = $request->file('video');
+                $video = Video::create([
+                    'title' => $request->title,
+                    'name' => $uploadedFile->hashName(),
+                    'path' => 'videos/',
+                ]);
+
+                Storage::disk('public')->put($video->completePath, $uploadedFile->get());
+
+                $quizz = Quizz::create([
+                    'title' => $validated['title'],
+                    'description' => $validated['description'],
+                    'user_id' => $request->user()->id,
+                    'video_id' => $video->id
+                ]);
+
+                if (isset($validated['textFields'])) {
+                    $textFields = [];
+                    foreach ($validated['textFields'] as $textField) {
+                        $textFields[] = array_merge($textField, ['quizz_id' => $quizz->id]);
                     }
-                    Choice::insert($choices);
+                    TextField::insert($textFields);
                 }
-            }
 
-        });
-        return response()->json([
-            'message' => 'Quizz created successfully'
-        ], 201);
+
+                if (isset($validated['radioButtonsFields'])) {
+
+                    foreach ($validated['radioButtonsFields'] as $radioButtonsField) {
+                        $group = RadioButtonsField::create([
+                            'title' => $radioButtonsField['title'],
+                            'quizz_id' => $quizz->id
+                        ]);
+                        $choices = [];
+                        foreach ($radioButtonsField['choices'] as $choice) {
+                            $choices[] = array_merge($choice, ['choosable_id' => $group->id, 'choosable_type' => RadioButtonsField::class]);
+                        }
+                        Choice::insert($choices);
+                    }
+                }
+
+            });
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+        }
+
+        return redirect()->route('quizz.index');
     }
 }
