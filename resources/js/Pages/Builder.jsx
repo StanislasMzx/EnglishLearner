@@ -34,6 +34,16 @@ export default function Builder({ auth }) {
         post(route("quizz.store"));
     };
 
+    function countRightAnswers() {
+        let res = 0;
+        for (let choice of questionChoices) {
+            if (choice.is_correct) {
+                res++;
+            }
+        }
+        return res;
+    }
+
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -613,7 +623,23 @@ export default function Builder({ auth }) {
                                             <button
                                                 type="button"
                                                 className="relative inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                                                onClick={() =>
+                                                onClick={() => {
+                                                    if (
+                                                        countRightAnswers() ===
+                                                            1 &&
+                                                        questionCorrect
+                                                    ) {
+                                                        toast.error(
+                                                            "Only one right answer is allowed",
+                                                        );
+                                                        return;
+                                                    }
+                                                    if (!questionAnswer) {
+                                                        toast.error(
+                                                            "Answer field is required",
+                                                        );
+                                                        return;
+                                                    }
                                                     setQuestionChoices([
                                                         ...questionChoices,
                                                         {
@@ -622,8 +648,8 @@ export default function Builder({ auth }) {
                                                             is_correct:
                                                                 questionCorrect,
                                                         },
-                                                    ])
-                                                }
+                                                    ]);
+                                                }}
                                             >
                                                 Create new answer
                                             </button>
@@ -642,7 +668,7 @@ export default function Builder({ auth }) {
                                             >
                                                 <div className="ml-3 grid grid-cols-10 gap-2">
                                                     <p className="text-sm font-bold text-gray-900">
-                                                        {choice.index}
+                                                        {choice.index + 1}
                                                     </p>
                                                     <p className="col-span-7 text-sm font-medium text-gray-900">
                                                         {choice.title}
@@ -675,7 +701,7 @@ export default function Builder({ auth }) {
                                                 questionChoices.length === 0
                                             ) {
                                                 toast.error(
-                                                    "Question and answer fields are required",
+                                                    "Question and at least one answer fields are required",
                                                 );
                                             } else {
                                                 setData("radioButtonsFields", [
