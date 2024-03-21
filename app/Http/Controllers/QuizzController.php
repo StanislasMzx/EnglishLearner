@@ -46,7 +46,7 @@ class QuizzController extends Controller
                     'radioButtonsFields' => 'array|nullable',
                     'radioButtonsFields.*.choices' => 'array|nullable',
                     'radioButtonsFields.*.title' => 'required|string',
-                    'video' => 'required|mimes:mp4',
+                    'video' => 'required|mimes:mp4,mp3|max:12500',
                 ]);
 
 

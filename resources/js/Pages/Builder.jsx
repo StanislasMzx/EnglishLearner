@@ -155,7 +155,7 @@ export default function Builder({ auth }) {
                                                                     id="file-upload"
                                                                     name="video"
                                                                     type="file"
-                                                                    accept="video/mp4"
+                                                                    accept="video/mp4,audio/mp3"
                                                                     className="sr-only"
                                                                     onChange={(
                                                                         e,
@@ -174,7 +174,8 @@ export default function Builder({ auth }) {
                                                             </p>
                                                         </div>
                                                         <p className="text-xs leading-5 text-gray-600">
-                                                            MP4 up to 100MB
+                                                            MP4 or MP3 up to
+                                                            100MB
                                                         </p>
                                                     </div>
                                                 ) : (
