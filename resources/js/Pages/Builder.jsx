@@ -708,7 +708,7 @@ export default function Builder({ auth }) {
                                                     ...data.radioButtonsFields,
                                                     {
                                                         index: questionIndex,
-                                                        // title: questionTitle,
+                                                        title: questionTitle,
                                                         // placeholder: questionPlaceholder,
                                                         choices:
                                                             questionChoices,

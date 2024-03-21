@@ -35,11 +35,9 @@ class QuizzController extends Controller
 
     public function store(Request $request): \Illuminate\Http\RedirectResponse
     {
+        DB::beginTransaction();
 
         try {
-
-            DB::transaction(static function () use ($request) {
-
                 $validated = $request->validate([
                     'title' => 'required|string|max:255',
                     'description' => 'required|string',
@@ -91,11 +89,13 @@ class QuizzController extends Controller
                     }
                 }
 
-            });
-        } catch (\Exception $e) {
-            dd($e->getMessage());
-        }
+                DB::commit();
 
-        return redirect()->route('quizz.index');
+                return redirect()->route('quizz.show', ['quizz_id' => $quizz->id]);
+
+        } catch (\Exception $e) {
+            // dd($e->getMessage());
+            return redirect()->route('quizz.index');
+        }
     }
 }
