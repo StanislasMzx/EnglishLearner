@@ -28,9 +28,9 @@ test('GET - quizz.show - classic', function () {
     $response->assertOk()->assertInertia(function (AssertableInertia $page) use ($quizz) {
         $page->component('Quizz')
             ->has('quizz')
-            ->where('quizz', Quizz::with('video')->findOrFail($quizz->id)->toArray());
+            ->where('quizz', Quizz::with('video', 'textFields', 'radioButtonsFields.choices')->findOrFail($quizz->id)->toArray());
     });
-});
+})->only();
 
 test('POST : quizz.store - classic', function () {
     $quizz = Quizz::factory()->make();
@@ -71,4 +71,4 @@ test('POST - quizz.store - store elements', function () {
 
     $this->assertDatabaseHas('radio_buttons_fields', ['title' => "oklm"]);
     $this->assertDatabaseHas('choices', ['title' => "test"]);
-})->only();
+});

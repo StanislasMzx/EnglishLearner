@@ -26,4 +26,16 @@ class Quizz extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function textFields(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(TextField::class);
+    }
+
+    public function radioButtonsFields(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(RadioButtonsField::class);
+    }
+
+
+
 }

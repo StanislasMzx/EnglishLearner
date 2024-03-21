@@ -26,7 +26,7 @@ class QuizzController extends Controller
 
     public function show(Request $request, int $quizz_id): Response
     {
-        $quizz = Quizz::with('video')->findOrFail($quizz_id);
+        $quizz = Quizz::with('video', 'textFields', 'radioButtonsFields.choices')->findOrFail($quizz_id);
         return Inertia::render('Quizz', [
             'quizz' => $quizz,
             'video_src' => Storage::disk('public')->url($quizz->video->path . $quizz->video->name),
