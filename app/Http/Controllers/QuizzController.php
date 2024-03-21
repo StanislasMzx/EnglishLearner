@@ -7,10 +7,10 @@ use App\Models\Quizz;
 use App\Models\RadioButtonsField;
 use App\Models\TextField;
 use App\Models\Video;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -27,9 +27,10 @@ class QuizzController extends Controller
     public function show(Request $request, int $quizz_id): Response
     {
         $quizz = Quizz::with('video', 'textFields', 'radioButtonsFields.choices')->findOrFail($quizz_id);
+        $video_src = $quizz->video->url;
         return Inertia::render('Quizz', [
             'quizz' => $quizz,
-            'video_src' => Storage::disk('public')->url($quizz->video->path . $quizz->video->name),
+            'video_src' => $video_src,
         ]);
     }
 
@@ -51,7 +52,7 @@ class QuizzController extends Controller
 
                 $uploadedFile = $request->file('video');
                 $video = Video::create([
-                    'title' => $request->title,
+                    'title' => $uploadedFile->getClientOriginalName(),
                     'name' => $uploadedFile->hashName(),
                     'path' => 'videos/',
                 ]);
@@ -93,7 +94,13 @@ class QuizzController extends Controller
 
                 return redirect()->route('quizz.show', ['quizz_id' => $quizz->id]);
 
+        } catch (ValidationException $e) {
+            DB::rollBack();
+
+            return redirect()->back()->withErrors($e->validator)->withInput();
         } catch (\Exception $e) {
+            DB::rollBack();
+
             // dd($e->getMessage());
             return redirect()->route('quizz.index');
         }
