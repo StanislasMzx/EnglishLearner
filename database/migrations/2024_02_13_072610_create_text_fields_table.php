@@ -19,7 +19,7 @@ return new class extends Migration
 
             $table->integer('index');
             $table->string('title');
-            $table->text('placeholder')->default('');
+            $table->text('placeholder')->nullable();
             $table->string('answer');
 
         });
