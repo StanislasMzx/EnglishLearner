@@ -44,6 +44,7 @@ class QuizzController extends Controller
                     'description' => 'required|string',
                     'textFields' => 'array|nullable',
                     'radioButtonsFields' => 'array|nullable',
+                    'radioButtonsFields.*.index' => 'required|int',
                     'radioButtonsFields.*.choices' => 'array|nullable',
                     'radioButtonsFields.*.title' => 'required|string',
                     'video' => 'required|mimes:mp4,mp3|max:12500',
@@ -80,7 +81,8 @@ class QuizzController extends Controller
                     foreach ($validated['radioButtonsFields'] as $radioButtonsField) {
                         $group = RadioButtonsField::create([
                             'title' => $radioButtonsField['title'],
-                            'quizz_id' => $quizz->id
+                            'quizz_id' => $quizz->id,
+                            'index' => $radioButtonsField['index'],
                         ]);
                         $choices = [];
                         foreach ($radioButtonsField['choices'] as $choice) {
@@ -101,7 +103,7 @@ class QuizzController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
 
-            // dd($e->getMessage());
+            dd($e->getMessage());
             return redirect()->route('quizz.index');
         }
     }

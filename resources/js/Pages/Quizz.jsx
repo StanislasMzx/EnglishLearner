@@ -9,6 +9,8 @@ import {
 } from "@heroicons/react/24/outline";
 import dateFormat from "dateformat";
 import ReactPlayer from "react-player/lazy";
+import TextInput from "@/Components/TextInput.jsx";
+import DangerButton from "@/Components/DangerButton.jsx";
 
 const product = {
     rating: 4,
@@ -34,7 +36,9 @@ function classNames(...classes) {
 }
 
 export default function Quizz({ auth, quizz, video_src }) {
-    console.log(quizz);
+    let questions = [...quizz.text_fields, ...quizz.radio_buttons_fields];
+    questions.sort((a, b) => a.index - b.index);
+
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -48,136 +52,134 @@ export default function Quizz({ auth, quizz, video_src }) {
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="lg:grid lg:grid-cols-3 lg:gap-x-16 lg:items-start">
-                        <div className="col-span-2">
-                            <div className="mt-10 px-4 sm:px-0 sm:mt-16 lg:mt-0">
-                                <h1 className="text-3xl font-extrabold tracking-tight text-gray-500">
-                                    Video: {quizz.video.title}
-                                </h1>
+                    <div className="mt-10 px-4 sm:px-0 sm:mt-16 lg:mt-0">
+                        <h1 className="text-3xl font-extrabold tracking-tight text-gray-500">
+                            Video: {quizz.video.title}
+                        </h1>
 
-                                <div className="mt-3">
-                                    <h2 className="sr-only">
-                                        Product information
-                                    </h2>
-                                    <p className="text-3xl text-gray-900">
-                                        Created on{" "}
-                                        {dateFormat(
-                                            quizz.created_at,
-                                            "mmmm dS, yyyy",
-                                        )}
-                                    </p>
-                                </div>
-
-                                {/* Reviews */}
-                                <div className="mt-3">
-                                    <h3 className="sr-only">Reviews</h3>
-                                    <div className="flex items-center">
-                                        <div className="flex items-center">
-                                            {[0, 1, 2, 3, 4].map((rating) => (
-                                                <StarIcon
-                                                    key={rating}
-                                                    className={classNames(
-                                                        product.rating > rating
-                                                            ? "text-indigo-500"
-                                                            : "text-gray-300",
-                                                        "h-5 w-5 flex-shrink-0",
-                                                    )}
-                                                    aria-hidden="true"
-                                                />
-                                            ))}
-                                        </div>
-                                        <p className="sr-only">
-                                            {product.rating} out of 5 stars
-                                        </p>
-                                    </div>
-                                </div>
-
-                                <div className="mt-6">
-                                    <h3 className="sr-only">Description</h3>
-
-                                    <div
-                                        className="text-base text-gray-700 space-y-6"
-                                        dangerouslySetInnerHTML={{
-                                            __html: quizz.description,
-                                        }}
-                                    />
-                                </div>
-
-                                <div className="mt-10">
-                                    <ReactPlayer
-                                        url={video_src}
-                                        controls={true}
-                                        width="100%"
-                                    />
-                                </div>
-                            </div>
+                        <div className="mt-3">
+                            <h2 className="sr-only">Product information</h2>
+                            <p className="text-3xl text-gray-900">
+                                Created on{" "}
+                                {dateFormat(quizz.created_at, "mmmm dS, yyyy")}
+                            </p>
                         </div>
-                        <div className="mt-10 px-4 sm:px-0 sm:mt-16 lg:mt-0">
-                            <section
-                                aria-labelledby="details-heading"
-                                className="mt-12"
-                            >
-                                <h2 id="details-heading" className="sr-only">
-                                    Additional details
-                                </h2>
 
-                                <div className="border-t divide-y divide-gray-200">
-                                    {product.details.map((detail) => (
-                                        <Disclosure as="div" key={detail.name}>
-                                            {({ open }) => (
-                                                <>
-                                                    <h3>
-                                                        <Disclosure.Button className="group relative w-full py-6 flex justify-between items-center text-left">
-                                                            <span
-                                                                className={classNames(
-                                                                    open
-                                                                        ? "text-indigo-600"
-                                                                        : "text-gray-900",
-                                                                    "text-sm font-medium",
-                                                                )}
-                                                            >
-                                                                {detail.name}
-                                                            </span>
-                                                            <span className="ml-6 flex items-center">
-                                                                {open ? (
-                                                                    <MinusIcon
-                                                                        className="block h-6 w-6 text-indigo-400 group-hover:text-indigo-500"
-                                                                        aria-hidden="true"
-                                                                    />
-                                                                ) : (
-                                                                    <PlusIcon
-                                                                        className="block h-6 w-6 text-gray-400 group-hover:text-gray-500"
-                                                                        aria-hidden="true"
-                                                                    />
-                                                                )}
-                                                            </span>
-                                                        </Disclosure.Button>
-                                                    </h3>
-                                                    <Disclosure.Panel
-                                                        as="div"
-                                                        className="pb-6 prose prose-sm"
-                                                    >
-                                                        <ul role="list">
-                                                            {detail.items.map(
-                                                                (item) => (
-                                                                    <li
-                                                                        key={
-                                                                            item
-                                                                        }
-                                                                    >
-                                                                        {item}
-                                                                    </li>
-                                                                ),
-                                                            )}
-                                                        </ul>
-                                                    </Disclosure.Panel>
-                                                </>
+                        {/* Reviews */}
+                        <div className="mt-3">
+                            <h3 className="sr-only">Reviews</h3>
+                            <div className="flex items-center">
+                                <div className="flex items-center">
+                                    {[0, 1, 2, 3, 4].map((rating) => (
+                                        <StarIcon
+                                            key={rating}
+                                            className={classNames(
+                                                product.rating > rating
+                                                    ? "text-indigo-500"
+                                                    : "text-gray-300",
+                                                "h-5 w-5 flex-shrink-0",
                                             )}
-                                        </Disclosure>
+                                            aria-hidden="true"
+                                        />
                                     ))}
                                 </div>
-                            </section>
+                                <p className="sr-only">
+                                    {product.rating} out of 5 stars
+                                </p>
+                            </div>
                         </div>
+
+                        <div className="mt-6">
+                            <h3 className="sr-only">Description</h3>
+
+                            <div
+                                className="text-base text-gray-700 space-y-6"
+                                dangerouslySetInnerHTML={{
+                                    __html: quizz.description,
+                                }}
+                            />
+                        </div>
+
+                        <div className="mt-10">
+                            <ReactPlayer
+                                url={video_src}
+                                controls={true}
+                                width="100%"
+                            />
+                        </div>
+                    </div>
+                    <div className="mt-10 px-4 sm:px-0 sm:mt-16">
+                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                            {questions.map((question) => (
+                                <div
+                                    key={question.index}
+                                    className="relative flex items-center space-x-3 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm focus-within:ring-2 hover:border-gray-400"
+                                >
+                                    <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-indigo-500">
+                                        <span className="text-l font-bold leading-none text-white">
+                                            {question.index}
+                                        </span>
+                                    </span>
+                                    <div className="min-w-0 flex-1">
+                                        <span
+                                            className="absolute inset-0"
+                                            aria-hidden="true"
+                                        />
+                                        <p className="text-sm font-medium text-gray-900">
+                                            {question.title}
+                                        </p>
+                                        <div className="truncate text-sm text-gray-500">
+                                            {!question?.choices ? (
+                                                <input
+                                                    type="text"
+                                                    name={question.index}
+                                                    id={question.index}
+                                                    className="relative block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                    placeholder={
+                                                        question.placeholder
+                                                    }
+                                                />
+                                            ) : (
+                                                <fieldset>
+                                                    <div className="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
+                                                        {question.choices.map(
+                                                            (choice) => (
+                                                                <div
+                                                                    key={
+                                                                        choice.id
+                                                                    }
+                                                                    className="flex items-center"
+                                                                >
+                                                                    <input
+                                                                        id={
+                                                                            question.index
+                                                                        }
+                                                                        name="notification-method"
+                                                                        type="radio"
+                                                                        className="relative h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                                                                    />
+                                                                    <label
+                                                                        htmlFor={
+                                                                            choice.id
+                                                                        }
+                                                                        className="ml-3 block text-sm font-medium leading-6 text-gray-900"
+                                                                    >
+                                                                        {
+                                                                            choice.title
+                                                                        }
+                                                                    </label>
+                                                                </div>
+                                                            ),
+                                                        )}
+                                                    </div>
+                                                </fieldset>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                        <DangerButton className="mt-4">Submit</DangerButton>
                     </div>
                 </div>
             </div>
