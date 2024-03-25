@@ -7,7 +7,6 @@ use App\Models\Quizz;
 use App\Models\RadioButtonsField;
 use App\Models\TextField;
 use App\Models\Video;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -98,4 +97,19 @@ class QuizzController extends Controller
             return redirect()->route('quizz.index');
         }
     }
+
+    public function destroy(Request $request, int $quizz_id): \Illuminate\Http\RedirectResponse
+    {
+        $quizz = Quizz::findOrFail($quizz_id);
+        $quizz->delete();
+        return redirect()->route('quizz.index');
+    }
+
+    public function update(Request $request, int $quizz_id): \Illuminate\Http\RedirectResponse
+    {
+        $quizz = Quizz::findOrFail($quizz_id);
+        $quizz->update($request->all());
+        return redirect()->route('quizz.show', ['quizz_id' => $quizz->id]);
+    }
+
 }
