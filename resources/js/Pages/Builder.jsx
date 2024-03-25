@@ -155,7 +155,7 @@ export default function Builder({ auth }) {
                                                                     id="file-upload"
                                                                     name="video"
                                                                     type="file"
-                                                                    accept="video/mp4"
+                                                                    accept="video/mp4,audio/mp3"
                                                                     className="sr-only"
                                                                     onChange={(
                                                                         e,
@@ -174,7 +174,8 @@ export default function Builder({ auth }) {
                                                             </p>
                                                         </div>
                                                         <p className="text-xs leading-5 text-gray-600">
-                                                            MP4 up to 100MB
+                                                            MP4 or MP3 up to
+                                                            100MB
                                                         </p>
                                                     </div>
                                                 ) : (
@@ -546,27 +547,6 @@ export default function Builder({ auth }) {
                                             }
                                         />
                                     </div>
-                                    <div className="mt-2 border border-gray-300 rounded-md px-3 py-2 shadow-sm focus-within:ring-1 focus-within:ring-indigo-600 focus-within:border-indigo-600">
-                                        <label
-                                            htmlFor="name"
-                                            className="block text-xs font-medium text-gray-900"
-                                        >
-                                            Details
-                                        </label>
-                                        <input
-                                            type="text"
-                                            name="name"
-                                            id="name"
-                                            value={questionPlaceholder}
-                                            className="block w-full border-0 p-0 text-gray-900 placeholder-gray-500 focus:ring-0 sm:text-sm"
-                                            placeholder="Any tips or hints"
-                                            onChange={(e) =>
-                                                setQuestionPlaceholder(
-                                                    e.target.value,
-                                                )
-                                            }
-                                        />
-                                    </div>
                                 </div>
                                 <div className="mt-2 border border-gray-300 rounded-md px-3 py-2 shadow-sm focus-within:ring-1 focus-within:ring-indigo-600 focus-within:border-indigo-600">
                                     <label
@@ -630,7 +610,7 @@ export default function Builder({ auth }) {
                                                         questionCorrect
                                                     ) {
                                                         toast.error(
-                                                            "Only one right answer is allowed",
+                                                            "Only one correct answer is allowed",
                                                         );
                                                         return;
                                                     }
@@ -702,6 +682,12 @@ export default function Builder({ auth }) {
                                             ) {
                                                 toast.error(
                                                     "Question and at least one answer fields are required",
+                                                );
+                                            } else if (
+                                                countRightAnswers() !== 1
+                                            ) {
+                                                toast.error(
+                                                    "Question requires exactly one correct answer",
                                                 );
                                             } else {
                                                 setData("radioButtonsFields", [
