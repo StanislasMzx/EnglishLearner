@@ -3,7 +3,7 @@ import { Head, useForm } from "@inertiajs/react";
 import InputLabel from "@/Components/InputLabel.jsx";
 import TextInput from "@/Components/TextInput.jsx";
 import InputError from "@/Components/InputError.jsx";
-import { VideoCameraIcon } from "@heroicons/react/16/solid/index.js";
+import { VideoCameraIcon, PhotoIcon } from "@heroicons/react/16/solid/index.js";
 import Modal from "@/Components/Modal.jsx";
 import { useState } from "react";
 import { PlusIcon } from "@heroicons/react/24/outline";
@@ -17,6 +17,7 @@ export default function Builder({ auth }) {
         textFields: [],
         radioButtonsFields: [],
         video: undefined,
+        thumbnail: undefined,
     });
 
     const [openTextQuestionModal, setOpenTextQuestionModal] = useState(false);
@@ -78,7 +79,7 @@ export default function Builder({ auth }) {
                                         <div>
                                             <InputLabel
                                                 htmlFor="title"
-                                                value="Title"
+                                                value="Title*"
                                             />
 
                                             <TextInput
@@ -106,7 +107,7 @@ export default function Builder({ auth }) {
                                         <div className="mt-4">
                                             <InputLabel
                                                 htmlFor="description"
-                                                value="Description"
+                                                value="Description*"
                                             />
 
                                             <textarea
@@ -131,8 +132,8 @@ export default function Builder({ auth }) {
 
                                         <div className="mt-4">
                                             <InputLabel
-                                                htmlFor="video"
-                                                value="Video"
+                                                htmlFor="media"
+                                                value="Medium*"
                                             />
 
                                             <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
@@ -197,6 +198,82 @@ export default function Builder({ auth }) {
 
                                             <InputError
                                                 message={errors.video}
+                                                className="mt-2"
+                                            />
+                                        </div>
+
+                                        <div className="mt-4">
+                                            <InputLabel
+                                                htmlFor="thumbnail"
+                                                value="Thumbnail"
+                                            />
+
+                                            <div className="mt-2 flex justify-center rounded-lg border border-dashed border-gray-900/25 px-6 py-10">
+                                                {!data.thumbnail ? (
+                                                    <div className="text-center">
+                                                        <PhotoIcon
+                                                            className="mx-auto h-12 w-12 text-gray-300"
+                                                            aria-hidden="true"
+                                                        />
+                                                        <div className="mt-4 flex text-sm leading-6 text-gray-600">
+                                                            <label
+                                                                htmlFor="thumbnail-upload"
+                                                                className="relative cursor-pointer rounded-md bg-white font-semibold text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-600 focus-within:ring-offset-2 hover:text-indigo-500"
+                                                            >
+                                                                <span>
+                                                                    Upload a
+                                                                    file
+                                                                </span>
+                                                                <input
+                                                                    id="thumbnail-upload"
+                                                                    name="thumbnail"
+                                                                    type="file"
+                                                                    accept="image/jpeg,image/png"
+                                                                    className="sr-only"
+                                                                    onChange={(
+                                                                        e,
+                                                                    ) => {
+                                                                        setData(
+                                                                            "thumbnail",
+                                                                            e
+                                                                                .target
+                                                                                .files[0],
+                                                                        );
+                                                                    }}
+                                                                />
+                                                            </label>
+                                                            <p className="pl-1">
+                                                                or drag and drop
+                                                            </p>
+                                                        </div>
+                                                        <p className="text-xs leading-5 text-gray-600">
+                                                            JPEG or PNG up to
+                                                            40MB
+                                                        </p>
+                                                    </div>
+                                                ) : (
+                                                    <div className="flex-1">
+                                                        <p className="text-sm text-green-500">
+                                                            {
+                                                                data.thumbnail
+                                                                    .name
+                                                            }
+                                                        </p>
+                                                        <div className="flex items-center gap-1 text-xs text-green-500">
+                                                            <span>
+                                                                {
+                                                                    data
+                                                                        .thumbnail
+                                                                        .type
+                                                                }
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </div>
+
+                                            <InputError
+                                                message={errors.thumbnail}
                                                 className="mt-2"
                                             />
                                         </div>

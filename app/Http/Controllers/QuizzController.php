@@ -66,17 +66,25 @@ class QuizzController extends Controller
                     $uploadedFile = $request->file('thumbnail');
 
                     Storage::disk('public')->put('thumbnails/' . $uploadedFile->hashName(), $uploadedFile->get());
-                    $path = 'thumbnails/' . $uploadedFile->hashName();
+                    $path = Storage::disk('public')->url('thumbnails/' . $uploadedFile->hashName());
                 }
 
-
-                $quizz = Quizz::create([
-                    'title' => $validated['title'],
-                    'description' => $validated['description'],
-                    'user_id' => $request->user()->id,
-                    'video_id' => $video->id,
-                    'thumbnail' => $path,
-                ]);
+                if ($path == null) {
+                    $quizz = Quizz::create([
+                        'title' => $validated['title'],
+                        'description' => $validated['description'],
+                        'user_id' => $request->user()->id,
+                        'video_id' => $video->id,
+                    ]);
+                } else {
+                    $quizz = Quizz::create([
+                        'title' => $validated['title'],
+                        'description' => $validated['description'],
+                        'user_id' => $request->user()->id,
+                        'video_id' => $video->id,
+                        'thumbnail' => $path,
+                    ]);
+                }
 
                 if (isset($validated['textFields'])) {
                     $textFields = [];

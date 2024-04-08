@@ -20,7 +20,7 @@ return new class extends Migration
 
             $table->string('title');
             $table->string('description');
-            $table->text('thumbnail')->default('https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.aflyon.org%2Fwp-content%2Fuploads%2F2018%2F12%2Fquizz.jpg&f=1&nofb=1&ipt=38b6cb8826a0b8b924187ce80548a30f9719467f420232143626ca7a22b53ef5&ipo=images');
+            $table->text('thumbnail')->default('https://chlorofil.fr/fileadmin/_processed_/4/9/csm_adobe-quizz_623561957f.jpg');
         });
     }
 
