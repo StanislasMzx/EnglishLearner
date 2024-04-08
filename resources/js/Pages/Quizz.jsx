@@ -1,15 +1,8 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head } from "@inertiajs/react";
-import { Disclosure, RadioGroup, Tab } from "@headlessui/react";
+import { Head, useForm } from "@inertiajs/react";
 import { StarIcon } from "@heroicons/react/24/solid";
-import {
-    PlayPauseIcon,
-    MinusIcon,
-    PlusIcon,
-} from "@heroicons/react/24/outline";
 import dateFormat from "dateformat";
 import ReactPlayer from "react-player/lazy";
-import TextInput from "@/Components/TextInput.jsx";
 import DangerButton from "@/Components/DangerButton.jsx";
 
 const product = {
@@ -54,7 +47,7 @@ export default function Quizz({ auth, quizz, video_src }) {
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="mt-10 px-4 sm:px-0 sm:mt-16 lg:mt-0">
                         <h1 className="text-3xl font-extrabold tracking-tight text-gray-500">
-                            Video: {quizz.video.title}
+                            Media: {quizz.video.title}
                         </h1>
 
                         <div className="mt-3">
@@ -108,79 +101,86 @@ export default function Quizz({ auth, quizz, video_src }) {
                             />
                         </div>
                     </div>
-                    <div className="mt-10 px-4 sm:px-0 sm:mt-16">
-                        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                            {questions.map((question) => (
-                                <div
-                                    key={question.index}
-                                    className="relative flex items-center space-x-3 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm focus-within:ring-2 hover:border-gray-400"
-                                >
-                                    <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-indigo-500">
-                                        <span className="text-l font-bold leading-none text-white">
-                                            {question.index}
+                    <form method="POST">
+                        <div className="mt-10 px-4 sm:px-0 sm:mt-16">
+                            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                {questions.map((question) => (
+                                    <div
+                                        key={question.index}
+                                        className="relative flex items-center space-x-3 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm focus-within:ring-2 hover:border-gray-400"
+                                    >
+                                        <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-indigo-500">
+                                            <span className="text-l font-bold leading-none text-white">
+                                                {question.index}
+                                            </span>
                                         </span>
-                                    </span>
-                                    <div className="min-w-0 flex-1">
-                                        <span
-                                            className="absolute inset-0"
-                                            aria-hidden="true"
-                                        />
-                                        <p className="text-sm font-medium text-gray-900">
-                                            {question.title}
-                                        </p>
-                                        <div className="truncate text-sm text-gray-500">
-                                            {!question?.choices ? (
-                                                <input
-                                                    type="text"
-                                                    name={question.index}
-                                                    id={question.index}
-                                                    className="relative block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                                                    placeholder={
-                                                        question.placeholder
-                                                    }
-                                                />
-                                            ) : (
-                                                <fieldset>
-                                                    <div className="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
-                                                        {question.choices.map(
-                                                            (choice) => (
-                                                                <div
-                                                                    key={
-                                                                        choice.id
-                                                                    }
-                                                                    className="flex items-center"
-                                                                >
-                                                                    <input
-                                                                        id={
-                                                                            question.index
-                                                                        }
-                                                                        name="notification-method"
-                                                                        type="radio"
-                                                                        className="relative h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
-                                                                    />
-                                                                    <label
-                                                                        htmlFor={
+                                        <div className="min-w-0 flex-1">
+                                            <span
+                                                className="absolute inset-0"
+                                                aria-hidden="true"
+                                            />
+                                            <p className="text-sm font-medium text-gray-900">
+                                                {question.title}
+                                            </p>
+                                            <div className="truncate text-sm text-gray-500">
+                                                {!question?.choices ? (
+                                                    <input
+                                                        type="text"
+                                                        name={question.index}
+                                                        id={question.index}
+                                                        className="relative block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                        placeholder={
+                                                            question.placeholder
+                                                        }
+                                                    />
+                                                ) : (
+                                                    <fieldset>
+                                                        <div className="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
+                                                            {question.choices.map(
+                                                                (choice) => (
+                                                                    <div
+                                                                        key={
                                                                             choice.id
                                                                         }
-                                                                        className="ml-3 block text-sm font-medium leading-6 text-gray-900"
+                                                                        className="flex items-center"
                                                                     >
-                                                                        {
-                                                                            choice.title
-                                                                        }
-                                                                    </label>
-                                                                </div>
-                                                            ),
-                                                        )}
-                                                    </div>
-                                                </fieldset>
-                                            )}
+                                                                        <input
+                                                                            id={
+                                                                                question.index
+                                                                            }
+                                                                            name={
+                                                                                question.index
+                                                                            }
+                                                                            value={
+                                                                                choice.id
+                                                                            }
+                                                                            type="radio"
+                                                                            className="relative h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                                                                        />
+                                                                        <label
+                                                                            htmlFor={
+                                                                                choice.id
+                                                                            }
+                                                                            className="ml-3 block text-sm font-medium leading-6 text-gray-900"
+                                                                        >
+                                                                            {
+                                                                                choice.title
+                                                                            }
+                                                                        </label>
+                                                                    </div>
+                                                                ),
+                                                            )}
+                                                        </div>
+                                                    </fieldset>
+                                                )}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            ))}
+                                ))}
+                            </div>
+                            <DangerButton className="mt-4">Submit</DangerButton>
                         </div>
-                        <DangerButton className="mt-4">Submit</DangerButton>
-                    </div>
+                    </form>
                 </div>
             </div>
         </AuthenticatedLayout>
