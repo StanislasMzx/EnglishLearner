@@ -122,4 +122,18 @@ class QuizzController extends Controller
         return redirect()->route('quizz.show', ['quizz_id' => $quizz->id]);
     }
 
+    public function validateAnswers(Request $request, int $quizz_id): \Illuminate\Http\RedirectResponse
+    {
+        $quizz = Quizz::with('radioButtonsFields.choices')->findOrFail($quizz_id);
+        $radioButtonsFields = $quizz->radioButtonsFields;
+        $answers = $request->all();
+        $score = 0;
+        foreach ($radioButtonsFields as $radioButtonsField) {
+            $correctChoice = $radioButtonsField->choices->firstWhere('is_correct', true);
+            if ($answers[$radioButtonsField->id] === $correctChoice->id) {
+                $score++;
+            }
+        }
+        return redirect()->route('quizz.show', ['quizz_id' => $quizz->id])->with('score', $score);
+    }
 }
