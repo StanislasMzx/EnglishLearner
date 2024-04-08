@@ -17,7 +17,7 @@ export default function Builder({ auth }) {
         textFields: [],
         radioButtonsFields: [],
         video: undefined,
-        thumbnail: undefined,
+        thumbnail: null,
     });
 
     const [openTextQuestionModal, setOpenTextQuestionModal] = useState(false);

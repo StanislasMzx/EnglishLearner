@@ -10,15 +10,6 @@ const product = {
     details: [
         {
             name: "Features",
-            items: [
-                "Multiple strap configurations",
-                "Spacious interior with top zip",
-                "Leather handle and tabs",
-                "Interior dividers",
-                "Stainless strap loops",
-                "Double stitched construction",
-                "Water-resistant",
-            ],
         },
         // More sections...
     ],
@@ -31,6 +22,14 @@ function classNames(...classes) {
 export default function Quizz({ auth, quizz, video_src }) {
     let questions = [...quizz.text_fields, ...quizz.radio_buttons_fields];
     questions.sort((a, b) => a.index - b.index);
+
+    const { data, setData, post, processing, errors, reset } = useForm();
+
+    const submit = (e) => {
+        e.preventDefault();
+        console.log(data);
+        post(route("quizz.validate-answers", { quizz_id: quizz.id }));
+    };
 
     return (
         <AuthenticatedLayout
@@ -101,7 +100,7 @@ export default function Quizz({ auth, quizz, video_src }) {
                             />
                         </div>
                     </div>
-                    <form method="POST">
+                    <form onSubmit={submit}>
                         <div className="mt-10 px-4 sm:px-0 sm:mt-16">
                             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                                 {questions.map((question) => (
@@ -128,9 +127,20 @@ export default function Quizz({ auth, quizz, video_src }) {
                                                         type="text"
                                                         name={question.index}
                                                         id={question.index}
+                                                        value={
+                                                            data[
+                                                                question.index.toString()
+                                                            ] || ""
+                                                        }
                                                         className="relative block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                                                         placeholder={
                                                             question.placeholder
+                                                        }
+                                                        onChange={(e) =>
+                                                            setData(
+                                                                question.index.toString(),
+                                                                e.target.value,
+                                                            )
                                                         }
                                                     />
                                                 ) : (
@@ -151,11 +161,16 @@ export default function Quizz({ auth, quizz, video_src }) {
                                                                             name={
                                                                                 question.index
                                                                             }
-                                                                            value={
-                                                                                choice.id
-                                                                            }
                                                                             type="radio"
                                                                             className="relative h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                                                                            onChange={(
+                                                                                e,
+                                                                            ) =>
+                                                                                setData(
+                                                                                    question.index.toString(),
+                                                                                    choice.id,
+                                                                                )
+                                                                            }
                                                                         />
                                                                         <label
                                                                             htmlFor={
