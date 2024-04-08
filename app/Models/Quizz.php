@@ -15,7 +15,8 @@ class Quizz extends Model
         'title',
         'description',
         'user_id',
-        'video_id'
+        'video_id',
+        'thumbnail',
     ];
 
     public function video(): \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -36,6 +37,13 @@ class Quizz extends Model
     public function radioButtonsFields(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(RadioButtonsField::class);
+    }
+
+    public function thumbnailURL(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => Storage::disk('public')->url($this->thumbnail)
+        )->shouldCache();
     }
 
 
