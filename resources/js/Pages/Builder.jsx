@@ -476,7 +476,7 @@ export default function Builder({ auth }) {
                                             htmlFor="name"
                                             className="block text-xs font-medium text-gray-900"
                                         >
-                                            Question n°{questionIndex}
+                                            Question n°{questionIndex}*
                                         </label>
                                         <input
                                             type="text"
@@ -610,7 +610,7 @@ export default function Builder({ auth }) {
                                             htmlFor="name"
                                             className="block text-xs font-medium text-gray-900"
                                         >
-                                            Question n°{questionIndex}
+                                            Question n°{questionIndex}*
                                         </label>
                                         <input
                                             type="text"

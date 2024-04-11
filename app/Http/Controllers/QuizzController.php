@@ -50,7 +50,7 @@ class QuizzController extends Controller
                 'radioButtonsFields.*.choices' => 'array|nullable',
                 'radioButtonsFields.*.title' => 'required|string',
                 'video' => 'required|mimes:mp4,mp3|max:12500',
-                'thumbnail' => 'mimes:jpeg,png|max:5000',
+                'thumbnail' => 'mimes:jpeg,png|max:5000|nullable',
                 'difficulty' => 'nullable|int|min:1|max:5',
             ]);
 
@@ -158,14 +158,16 @@ class QuizzController extends Controller
         $radioButtonsFields = $radioButtonsFields->mapWithKeys(fn ($value, $key) => [$key => $value]);
 
         $textFields = $textFields->map(fn ($value, $key) => ['index' => $key, 'value' => $value, 'correct' => $quiz->textFields->where('index', $key)->toArray()[0]['answer']]);
-        $radioButtonsFields = $radioButtonsFields->map(fn ($value, $key) => ['index' => $key, 'value' => $value, 'correct' => $quiz->radioButtonsFields->where('index', $key)->first()->choices->where('index', $value - 1)->first()->is_correct]);
+        $radioButtonsFields = $radioButtonsFields->map(fn ($value, $key) => ['index' => $key, 'value' => $value, 'correct' => $quiz->radioButtonsFields->where('index', $key)->first()->choices->where('index', $value)->first()->is_correct]);
 
         $corrected = $textFields->merge($radioButtonsFields);
+
+        $video_src = $quiz->video->url;
 
         return Inertia::render('Quizz', [
             'quizz' => $quiz,
             'corrected' => $corrected,
+            'video_src' => $video_src
         ]);
-
     }
 }
