@@ -141,18 +141,26 @@ class QuizzController extends Controller
         return redirect()->route('quizz.show', ['quizz_id' => $quizz->id]);
     }
 
-    public function validateAnswers(Request $request, int $quizz_id): \Illuminate\Http\RedirectResponse
+    public function validateAnswers(Request $request, int $quizz_id): Response
     {
-        $quizz = Quizz::with('radioButtonsFields.choices')->findOrFail($quizz_id);
-        $radioButtonsFields = $quizz->radioButtonsFields;
-        $answers = $request->all();
-        $score = 0;
-        foreach ($radioButtonsFields as $radioButtonsField) {
-            $correctChoice = $radioButtonsField->choices->firstWhere('is_correct', true);
-            if ($answers[$radioButtonsField->id] === $correctChoice->id) {
-                $score++;
-            }
-        }
-        return redirect()->route('quizz.show', ['quizz_id' => $quizz->id])->with('score', $score);
+        $rq = $request->all();
+        $rq = collect($rq);
+        $textFields = $rq->filter(fn($value) => is_string($value));
+        $radioButtonsFields = $rq->filter(fn($value) => is_int($value));
+        $quiz = Quizz::with('textFields', 'radioButtonsFields.choices')->findOrFail($quizz_id);
+        $textFields = $textFields->mapWithKeys(fn($value, $key) => [$key => $value]);
+        $radioButtonsFields = $radioButtonsFields->mapWithKeys(fn($value, $key) => [$key => $value]);
+
+        $textFields = $textFields->map(fn($value, $key) => ['index' => $key, 'value' => $value, 'correct' => $quiz->textFields->where('index', $key)->toArray()[0]['answer']]);
+        $radioButtonsFields = $radioButtonsFields->map(fn($value, $key) => ['index' => $key, 'value' => $value, 'correct' => $quiz->radioButtonsFields->where('index', $key)->first()->choices->where('index', $value - 1)->first()->is_correct]);
+
+        $corrected = $textFields->merge($radioButtonsFields);
+
+        return Inertia::render('Quizz', [
+            'quizz' => $quiz,
+            'corrected' => $corrected,
+        ]);
+
+
     }
 }
