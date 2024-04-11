@@ -10,7 +10,7 @@ class RadioButtonsField extends Model
     use HasFactory;
 
     protected $fillable = [
-        'quizz_id', 'title', 'index'
+        'quizz_id', 'title', 'index',
     ];
 
     public function quizz()
@@ -22,6 +22,4 @@ class RadioButtonsField extends Model
     {
         return $this->morphMany(Choice::class, 'choosable');
     }
-
-
 }

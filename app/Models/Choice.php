@@ -10,7 +10,7 @@ class Choice extends Model
     use HasFactory;
 
     protected $fillable = [
-        'choosable_id', 'choosable_type', 'is_correct', 'title'
+        'choosable_id', 'choosable_type', 'is_correct', 'title',
     ];
 
     public function choosable(): \Illuminate\Database\Eloquent\Relations\MorphTo

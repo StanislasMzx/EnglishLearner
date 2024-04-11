@@ -10,13 +10,11 @@ class TextField extends Model
     use HasFactory;
 
     protected $fillable = [
-        'quizz_id', 'title', 'placeholder', 'answer', 'index'
+        'quizz_id', 'title', 'placeholder', 'answer', 'index',
     ];
 
     public function quizz()
     {
         return $this->belongsTo(Quizz::class);
     }
-
-
 }

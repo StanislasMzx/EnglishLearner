@@ -55,10 +55,10 @@ test('POST - quizz.store - store elements', function () {
         'video' => UploadedFile::fake()->create('video.mp4', 1024),
         'radioButtonsFields' => [
             [
-                'choices' => [['title' => "test", "is_correct" => true]],
-                'title' => "oklm"
-            ]
-        ]
+                'choices' => [['title' => 'test', 'is_correct' => true]],
+                'title' => 'oklm',
+            ],
+        ],
 
     ]);
     $response->assertRedirect();
@@ -69,6 +69,6 @@ test('POST - quizz.store - store elements', function () {
         $this->assertDatabaseHas('text_fields', ['title' => $textField->title]);
     }
 
-    $this->assertDatabaseHas('radio_buttons_fields', ['title' => "oklm"]);
-    $this->assertDatabaseHas('choices', ['title' => "test"]);
+    $this->assertDatabaseHas('radio_buttons_fields', ['title' => 'oklm']);
+    $this->assertDatabaseHas('choices', ['title' => 'test']);
 });

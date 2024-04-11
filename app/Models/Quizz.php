@@ -45,6 +45,4 @@ class Quizz extends Model
             get: fn () => Storage::disk('public')->url($this->thumbnail)
         )->shouldCache();
     }
-
-
 }
