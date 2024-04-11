@@ -36,7 +36,7 @@ export default function Quizz({ auth, quizz, video_src }) {
             user={auth.user}
             header={
                 <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Quizz: {quizz.title}
+                    Quiz: {quizz.title}
                 </h2>
             }
         >

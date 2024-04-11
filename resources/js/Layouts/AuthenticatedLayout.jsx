@@ -25,7 +25,7 @@ export default function Authenticated({ user, header, children }) {
                                     Quizzes
                                 </NavLink>
                                 <NavLink href={route('builder.index')} active={route().current('builder.index')}>
-                                    Quizz Builder
+                                    Quiz Builder
                                 </NavLink>
                             </div>
                         </div>
@@ -99,7 +99,7 @@ export default function Authenticated({ user, header, children }) {
                             Quizzes
                         </ResponsiveNavLink>
                         <ResponsiveNavLink href={route('builder.index')} active={route().current('builder.index')}>
-                            Quizz Builder
+                            Quiz Builder
                         </ResponsiveNavLink>
                     </div>
 

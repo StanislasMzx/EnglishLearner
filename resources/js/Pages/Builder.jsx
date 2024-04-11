@@ -50,11 +50,11 @@ export default function Builder({ auth }) {
             user={auth.user}
             header={
                 <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Quizz Builder
+                    Quiz Builder
                 </h2>
             }
         >
-            <Head title="Quizz Builder" />
+            <Head title="Quiz Builder" />
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
