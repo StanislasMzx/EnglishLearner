@@ -6,10 +6,6 @@ import ReactPlayer from "react-player/lazy";
 import DangerButton from "@/Components/DangerButton.jsx";
 import InputError from "@/Components/InputError.jsx";
 
-const product = {
-    rating: 4,
-};
-
 function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
 }
@@ -62,7 +58,7 @@ export default function Quizz({ auth, quizz, corrected, video_src }) {
                                         <StarIcon
                                             key={rating}
                                             className={classNames(
-                                                product.rating > rating
+                                                quizz.difficulty > rating
                                                     ? "text-indigo-500"
                                                     : "text-gray-300",
                                                 "h-5 w-5 flex-shrink-0",

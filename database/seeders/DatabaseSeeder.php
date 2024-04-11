@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
             [
                 'email' => 'user@default.com',
                 'password' => Hash::make('password'),
-                'name' => 'Admin',
+                'name' => 'Default User',
             ]);
         $thumbnails = [
             'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmakeupbyazadig.fr%2Fwp-content%2Fuploads%2F2020%2F09%2Frevue-article-meilleures-series-netflix-2020-2021-makeupbyazadig-top-horreur-comedie-aventure-magique-amour-romantique-the-order-magie-2.jpg&f=1&nofb=1&ipt=5d04fc239e55ec7d4c5778489f1379acc178ef1a75cdcb5576856b6b89866f39&ipo=images',
