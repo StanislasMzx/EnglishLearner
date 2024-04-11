@@ -51,6 +51,7 @@ class QuizzController extends Controller
                 'radioButtonsFields.*.title' => 'required|string',
                 'video' => 'required|mimes:mp4,mp3|max:12500',
                 'thumbnail' => 'mimes:jpeg,png|max:5000',
+                'difficulty' => 'nullable|int|min:1|max:5',
             ]);
 
             $uploadedFile = $request->file('video');
@@ -76,6 +77,7 @@ class QuizzController extends Controller
                     'description' => $validated['description'],
                     'user_id' => $request->user()->id,
                     'video_id' => $video->id,
+                    'difficulty' => $validated['difficulty'] ?? 1,
                 ]);
             } else {
                 $quizz = Quizz::create([
@@ -84,6 +86,7 @@ class QuizzController extends Controller
                     'user_id' => $request->user()->id,
                     'video_id' => $video->id,
                     'thumbnail' => $path,
+                    'difficulty' => $validated['difficulty'] ?? 1,
                 ]);
             }
 

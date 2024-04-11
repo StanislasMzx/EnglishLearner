@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('video_id')->nullable()->constrained('videos')->cascadeOnDelete();
 
+            $table->integer('difficulty')->default(1);
             $table->string('title');
             $table->string('description');
             $table->text('thumbnail')->default('https://chlorofil.fr/fileadmin/_processed_/4/9/csm_adobe-quizz_623561957f.jpg');

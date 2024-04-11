@@ -17,6 +17,7 @@ class Quizz extends Model
         'user_id',
         'video_id',
         'thumbnail',
+        'difficulty',
     ];
 
     public function video(): \Illuminate\Database\Eloquent\Relations\BelongsTo
