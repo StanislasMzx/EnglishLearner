@@ -11,6 +11,24 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
 }
 
+function DestroyQuiz({ authId, quizz }) {
+    if (authId === quizz.user_id) {
+        return (
+            <DangerButton
+                onClick={() =>
+                    router.delete(
+                        route("quizz.destroy", { quizz_id: quizz.id }),
+                    )
+                }
+                className="mt-4"
+            >
+                Delete quiz
+            </DangerButton>
+        );
+    }
+    return null;
+}
+
 export default function Quizz({ auth, quizz, corrected, video_src }) {
     let questions = [...quizz.text_fields, ...quizz.radio_buttons_fields];
     questions.sort((a, b) => a.index - b.index);
@@ -233,16 +251,7 @@ export default function Quizz({ auth, quizz, corrected, video_src }) {
                             </PrimaryButton>
                         </div>
                     </form>
-                    <DangerButton
-                        onClick={() =>
-                            router.delete(
-                                route("quizz.destroy", { quizz_id: quizz.id }),
-                            )
-                        }
-                        className="mt-4"
-                    >
-                        Delete quiz
-                    </DangerButton>
+                    <DestroyQuiz authId={auth.user.id} quizz={quizz} />
                 </div>
             </div>
         </AuthenticatedLayout>
