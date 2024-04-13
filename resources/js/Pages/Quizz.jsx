@@ -1,10 +1,11 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
-import { Head, useForm } from "@inertiajs/react";
+import { Head, useForm, router } from "@inertiajs/react";
 import { StarIcon } from "@heroicons/react/24/solid";
 import dateFormat from "dateformat";
 import ReactPlayer from "react-player/lazy";
 import DangerButton from "@/Components/DangerButton.jsx";
 import InputError from "@/Components/InputError.jsx";
+import PrimaryButton from "@/Components/PrimaryButton.jsx";
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
@@ -227,9 +228,21 @@ export default function Quizz({ auth, quizz, corrected, video_src }) {
                                     </div>
                                 ))}
                             </div>
-                            <DangerButton className="mt-4">Submit</DangerButton>
+                            <PrimaryButton className="mt-4">
+                                Submit
+                            </PrimaryButton>
                         </div>
                     </form>
+                    <DangerButton
+                        onClick={() =>
+                            router.delete(
+                                route("quizz.destroy", { quizz_id: quizz.id }),
+                            )
+                        }
+                        className="mt-4"
+                    >
+                        Delete quiz
+                    </DangerButton>
                 </div>
             </div>
         </AuthenticatedLayout>
