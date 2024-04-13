@@ -18,6 +18,7 @@ class QuizzFactory extends Factory
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
             'title' => $this->faker->word(),
+            'difficulty' => random_int(1, 5),
             'description' => $this->faker->text(),
             'user_id' => User::factory()->create()->id,
             'video_id' => Video::factory()->create()->id,

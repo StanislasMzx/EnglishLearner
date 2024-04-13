@@ -9,11 +9,13 @@ import { useState } from "react";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import toast, { Toaster } from "react-hot-toast";
 import DangerButton from "@/Components/DangerButton.jsx";
+import Dropdown from "@/Components/Dropdown.jsx";
 
 export default function Builder({ auth }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         title: "",
         description: "",
+        difficulty: 1,
         textFields: [],
         radioButtonsFields: [],
         video: undefined,
@@ -67,7 +69,7 @@ export default function Builder({ auth }) {
                                         Video
                                     </h3>
                                     <p className="mt-1 text-sm text-gray-600">
-                                        Please upload the video that the quiz
+                                        Please upload the media that the quiz
                                         will be based on, along with general
                                         information.
                                     </p>
@@ -126,6 +128,41 @@ export default function Builder({ auth }) {
 
                                             <InputError
                                                 message={errors.description}
+                                                className="mt-2"
+                                            />
+                                        </div>
+
+                                        <div>
+                                            <InputLabel
+                                                htmlFor="difficulty"
+                                                value="Difficulty*"
+                                            />
+
+                                            <select
+                                                id="difficulty"
+                                                name="difficulty"
+                                                className="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                                value={data.difficulty}
+                                                onChange={(e) =>
+                                                    setData(
+                                                        "difficulty",
+                                                        e.target.value,
+                                                    )
+                                                }
+                                            >
+                                                <option value={1}>
+                                                    1 (Easy)
+                                                </option>
+                                                <option value={2}>2</option>
+                                                <option value={3}>3</option>
+                                                <option value={4}>4</option>
+                                                <option value={5}>
+                                                    5 (Hard)
+                                                </option>
+                                            </select>
+
+                                            <InputError
+                                                message={errors.title}
                                                 className="mt-2"
                                             />
                                         </div>
