@@ -33,7 +33,7 @@ export default function Builder({ auth }) {
 
     const submit = (e) => {
         e.preventDefault();
-        console.log(data);
+        // console.log(data);
         post(route("quizz.store"));
     };
 

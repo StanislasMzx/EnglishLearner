@@ -6,6 +6,7 @@ import ReactPlayer from "react-player/lazy";
 import DangerButton from "@/Components/DangerButton.jsx";
 import InputError from "@/Components/InputError.jsx";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
+import Alert from "@/Components/Alert.jsx";
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
@@ -27,6 +28,18 @@ function DestroyQuiz({ authId, quizz }) {
         );
     }
     return null;
+}
+
+function ComputeScore(corrected) {
+    let score = 0.0;
+    for (const question of corrected) {
+        if (typeof question.value === "number") {
+            score += question.correct ? 1 : 0;
+        } else {
+            score += question.value === question.correct ? 1 : 0;
+        }
+    }
+    return ((score / corrected.length) * 100).toFixed(2);
 }
 
 export default function Quizz({ auth, quizz, corrected, video_src }) {
@@ -54,7 +67,17 @@ export default function Quizz({ auth, quizz, corrected, video_src }) {
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="mt-10 px-4 sm:px-0 sm:mt-16 lg:mt-0">
-                        <h1 className="text-3xl font-extrabold tracking-tight text-gray-500">
+                        {corrected && (
+                            <Alert
+                                message={
+                                    "Your score is " +
+                                    ComputeScore(corrected) +
+                                    "%"
+                                }
+                            />
+                        )}
+
+                        <h1 className="mt-3 text-3xl font-extrabold tracking-tight text-gray-500">
                             Media: {quizz.video.title}
                         </h1>
 
