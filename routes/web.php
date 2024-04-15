@@ -26,26 +26,28 @@ Route::get('/', function () {
     ]);
 });
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 })->name('upload.index');
 
-Route::prefix('dashboard')->group(function () {
-    Route::prefix('quizz')->group(function () {
-        Route::prefix('builder')->group(function () {
-            Route::get('/', static function () {
-                return Inertia::render('Builder');
-            })->name('builder.index');
-        });
-        Route::get('/', [QuizzController::class, 'index'])->name('quizz.index');
-        Route::get('/{quizz_id}', [QuizzController::class, 'show'])->name('quizz.show');
-        Route::post('/{quizz_id}', [QuizzController::class, 'validateAnswers'])->name('quizz.validate-answers');
-        Route::delete('/{quizz_id}', [QuizzController::class, 'destroy'])->name('quizz.destroy');
+Route::middleware('verified')->group(function () {
+    Route::prefix('dashboard')->group(function () {
+        Route::prefix('quizz')->group(function () {
+            Route::prefix('builder')->group(function () {
+                Route::get('/', static function () {
+                    return Inertia::render('Builder');
+                })->name('builder.index');
+            });
+            Route::get('/', [QuizzController::class, 'index'])->name('quizz.index');
+            Route::get('/{quizz_id}', [QuizzController::class, 'show'])->name('quizz.show');
+            Route::post('/{quizz_id}', [QuizzController::class, 'validateAnswers'])->name('quizz.validate-answers');
+            Route::delete('/{quizz_id}', [QuizzController::class, 'destroy'])->name('quizz.destroy');
 
-        Route::post('/', [QuizzController::class, 'store'])->name('quizz.store');
+            Route::post('/', [QuizzController::class, 'store'])->name('quizz.store');
+        });
     });
-});
+})->name('dashboard.index');
 
 require __DIR__.'/auth.php';
