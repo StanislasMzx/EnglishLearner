@@ -157,7 +157,7 @@ class QuizzController extends Controller
         $textFields = $textFields->mapWithKeys(fn ($value, $key) => [$key => $value]);
         $radioButtonsFields = $radioButtonsFields->mapWithKeys(fn ($value, $key) => [$key => $value]);
 
-        $textFields = $textFields->map(fn ($value, $key) => ['index' => $key, 'value' => $value, 'correct' => $quiz->textFields->where('index', $key)->toArray()[0]['answer']]);
+        $textFields = $textFields->map(fn ($value, $key) => ['index' => $key, 'value' => $value, 'correct' => current($quiz->textFields->where('index', $key)->toArray())['answer']]);
         $radioButtonsFields = $radioButtonsFields->map(fn ($value, $key) => ['index' => $key, 'value' => $value, 'correct' => $quiz->radioButtonsFields->where('index', $key)->first()->choices->where('index', $value)->first()->is_correct]);
 
         $corrected = $textFields->merge($radioButtonsFields);

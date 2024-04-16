@@ -42,6 +42,15 @@ function ComputeScore(corrected) {
     return ((score / corrected.length) * 100).toFixed(2);
 }
 
+function GetAnswer(corrected, index) {
+    for (const i in corrected) {
+        if (corrected[i].index === index) {
+            return corrected[i];
+        }
+    }
+    return undefined;
+}
+
 export default function Quizz({ auth, quizz, corrected, video_src }) {
     let questions = [...quizz.text_fields, ...quizz.radio_buttons_fields];
     questions.sort((a, b) => a.index - b.index);
@@ -152,7 +161,7 @@ export default function Quizz({ auth, quizz, corrected, video_src }) {
                                             <p className="text-sm font-medium text-gray-900">
                                                 {question.title}
                                             </p>
-                                            <div className="truncate text-sm text-gray-500">
+                                            <div className="text-ellipsis text-sm text-gray-500">
                                                 {!question?.choices ? (
                                                     <>
                                                         <input
@@ -182,19 +191,19 @@ export default function Quizz({ auth, quizz, corrected, video_src }) {
                                                         <InputError
                                                             message={
                                                                 corrected &&
-                                                                corrected[
-                                                                    question.index -
-                                                                        1
-                                                                ].value !==
-                                                                    corrected[
-                                                                        question.index -
-                                                                            1
-                                                                    ].correct
+                                                                GetAnswer(
+                                                                    corrected,
+                                                                    question.index,
+                                                                ).value !==
+                                                                    GetAnswer(
+                                                                        corrected,
+                                                                        question.index,
+                                                                    ).correct
                                                                     ? "The right answer is " +
-                                                                      corrected[
-                                                                          question.index -
-                                                                              1
-                                                                      ].correct
+                                                                      GetAnswer(
+                                                                          corrected,
+                                                                          question.index,
+                                                                      ).correct
                                                                     : ""
                                                             }
                                                             className="mt-2"
@@ -253,10 +262,10 @@ export default function Quizz({ auth, quizz, corrected, video_src }) {
                                                         <InputError
                                                             message={
                                                                 corrected &&
-                                                                !corrected[
-                                                                    question.index -
-                                                                        1
-                                                                ].correct
+                                                                !GetAnswer(
+                                                                    corrected,
+                                                                    question.index,
+                                                                ).correct
                                                                     ? "The is not the right answer"
                                                                     : ""
                                                             }
